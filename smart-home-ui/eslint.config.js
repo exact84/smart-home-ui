@@ -1,14 +1,42 @@
-import js from '@eslint/js';
-import eslintPluginUnicorn from 'eslint-plugin-unicorn';
-import eslintConfigPrettier from 'eslint-config-prettier';
+const eslint = require('@eslint/js');
+const tseslint = require('typescript-eslint');
+const angular = require('angular-eslint');
+const unicorn = require('eslint-plugin-unicorn').default;
+const prettier = require('eslint-config-prettier');
+const eslintPluginPrettier = require('eslint-plugin-prettier');
 
-export default [
-  js.configs.recommended,
-  eslintPluginUnicorn.configs.recommended,
-  eslintConfigPrettier,
+module.exports = tseslint.config(
   {
+    files: ['**/*.ts'],
+    extends: [
+      eslint.configs.recommended,
+      ...tseslint.configs.recommended,
+      ...angular.configs.tsRecommended,
+      prettier,
+    ],
+    plugins: {
+      unicorn,
+      prettier: eslintPluginPrettier,
+    },
     rules: {
-      'unicorn/better-regex': 'warn',
+      '@angular-eslint/component-selector': [
+        'error',
+        { type: 'element', prefix: 'app', style: 'kebab-case' },
+      ],
+      '@angular-eslint/directive-selector': [
+        'error',
+        { type: 'attribute', prefix: 'app', style: 'camelCase' },
+      ],
+      'unicorn/better-regex': 'error',
+      'unicorn/no-empty-file': 'error',
+      'unicorn/prevent-abbreviations': 'off',
+      'unicorn/no-null': 'error',
+      'unicorn/filename-case': 'off',
+      'prettier/prettier': 'error',
     },
   },
-];
+  {
+    files: ['**/*.html'],
+    extends: [...angular.configs.templateRecommended],
+  }
+);
