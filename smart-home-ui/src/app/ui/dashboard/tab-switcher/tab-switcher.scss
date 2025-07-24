@@ -1,0 +1,11 @@
+:host {
+  display: flex;
+  flex-direction: row;
+}
+
+.tab {
+  background-color: darkgray;
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+}

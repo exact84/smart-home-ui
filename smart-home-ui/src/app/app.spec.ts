@@ -19,7 +19,7 @@ describe('App', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('h1')?.textContent).toContain(
-      'Hello, smart-home-ui',
+      'Hello, smart-home-ui'
     );
   });
 });

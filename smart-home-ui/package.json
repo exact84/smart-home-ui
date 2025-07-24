@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "eslint src --ext .ts,.html --fix",
-    "format": "prettier --write \"src/**/*.{ts,html,scss,css,json,md}\"",
+    "format": "prettier --config .prettierrc --write \"src/**/*.{ts,html,scss,css,json,md}\"",
     "prepare": "husky"
   },
   "prettier": {
@@ -23,10 +23,12 @@
   },
   "private": true,
   "dependencies": {
+    "@angular/cdk": "^20.1.3",
     "@angular/common": "^20.1.0",
     "@angular/compiler": "^20.1.0",
     "@angular/core": "^20.1.0",
     "@angular/forms": "^20.1.0",
+    "@angular/material": "^20.1.3",
     "@angular/platform-browser": "^20.1.0",
     "@angular/router": "^20.1.0",
     "rxjs": "~7.8.0",
