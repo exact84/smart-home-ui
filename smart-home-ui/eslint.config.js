@@ -38,7 +38,9 @@ module.exports = tseslint.config(
       "unicorn/prevent-abbreviations": "off",
       "unicorn/no-null": "error",
       "unicorn/filename-case": "off",
+      "unicorn/prefer-top-level-await": "off", // bacause of old browser support
       "prettier/prettier": "error",
+      "prettier/prettier": ["warn", { endOfLine: "crlf" }],
     },
   },
   {
