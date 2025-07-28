@@ -1,1 +1,61 @@
-<p>card works!</p>
+<h3>{{ card.title }}</h3>
+
+@if (card.layout === "horizontalLayout") {
+  <div class="sensor-group">
+    @for (item of card.items; track item.label) {
+      <div class="sensor">
+        <mat-icon>{{ item.icon }}</mat-icon>
+        <span class="label">{{ item.label }}</span>
+        @if ("value" in item) {
+          <span class="value">
+            {{ item.value.amount }} {{ item.value.unit }}
+          </span>
+        }
+      </div>
+    }
+  </div>
+}
+
+@if (card.layout === "verticalLayout") {
+  @for (item of card.items; track item.label) {
+    <div class="row">
+      <mat-icon>{{ item.icon }}</mat-icon>
+      <span class="label">{{ item.label }}</span>
+      @if ("value" in item) {
+        <span class="value">{{ item.value }}</span>
+      }
+    </div>
+  }
+}
+
+@if (card.layout === "singleDevice" && card.items[0].type === "device") {
+  <div class="title-row">
+    <span class="label">{{ card.title }}</span>
+    <mat-icon>{{ card.items[0].icon }}</mat-icon>
+  </div>
+  @if ("state" in card.items[0]) {
+    <div class="state">
+      {{ card.items[0].state }}
+    </div>
+  }
+}
+
+@if (card.layout === "singleDevice" && card.items[0].type === "sensor") {
+  <div class="row switch">
+    <mat-icon>{{ card.items[0].icon }}</mat-icon>
+    <span class="label">{{ card.items[0].label }}</span>
+    @if ("state" in card.items[0]) {
+      <mat-slide-toggle [checked]="card.items[0].state"></mat-slide-toggle>
+    }
+  </div>
+
+  @for (item of card.items.slice(1); track item.label) {
+    <div class="row">
+      <mat-icon>{{ item.icon }}</mat-icon>
+      <span class="label">{{ item.label }}</span>
+      @if ("value" in item) {
+        <span class="value">{{ item.value }}</span>
+      }
+    </div>
+  }
+}

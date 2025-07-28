@@ -1,9 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Card } from '../../../interfaces/dashboard.model';
+import { Card as CardCOmponent } from './card/card';
 
 @Component({
   selector: 'app-card-list',
-  imports: [],
+  imports: [CardCOmponent],
   templateUrl: './card-list.html',
   styleUrl: './card-list.scss',
 })
-export class CardList {}
+export class CardList {
+  @Input() cards: Card[] = [];
+}

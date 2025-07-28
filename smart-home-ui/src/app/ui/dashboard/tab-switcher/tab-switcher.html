@@ -1,5 +1,12 @@
-@for (item of tabs; track item.title) {
-  <div class="tab">
-    <span>{{ item.title }}</span>
-  </div>
+<div class="tabs">
+  @for (item of tabs; track item.title) {
+    <div class="tab" (click)="selectTab($index)">
+      <span>{{ item.title }}</span>
+    </div>
+  }
+</div>
+
+@if (activeTab) {
+  @let tab = activeTab;
+  <app-card-list [cards]="tab.cards"></app-card-list>
 }
