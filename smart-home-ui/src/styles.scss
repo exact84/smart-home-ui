@@ -22,7 +22,7 @@ html {
   // Default the application to a light color theme. This can be changed to
   // `dark` to enable the dark color theme, or to `light dark` to defer to the
   // user's system settings.
-  color-scheme: light;
+  color-scheme: dark;
 
   // Set a default background, font and text colors for the application using
   // Angular Material's system-level CSS variables. Learn more about these
@@ -39,4 +39,29 @@ body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+h3 {
+  margin-top: 0;
+}
+
+:root {
+  @include mat.slide-toggle-overrides(
+    (
+      track-height: 12px,
+      selected-track-color: rgb(0, 162, 255),
+      selected-handle-color: rgb(0, 162, 255),
+      unselected-track-color: gray,
+      unselected-icon-size: 0px,
+      selected-icon-size: 0px,
+      // selected-handle-horizontal-margin: 0px,
+      selected-pressed-handle-horizontal-margin: 0px,
+      selected-track-outline-color: rgb(0, 162, 255),
+      // disabled-selected-handle-color: gray,
+      selected-focus-handle-color: rgb(0, 162, 255),
+      selected-focus-track-color: rgb(0, 162, 255),
+      selected-hover-handle-color: rgb(0, 162, 255),
+      selected-hover-track-color: rgb(0, 162, 255),
+    )
+  );
 }

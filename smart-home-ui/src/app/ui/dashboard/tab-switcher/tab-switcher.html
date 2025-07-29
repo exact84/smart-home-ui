@@ -1,6 +1,10 @@
 <div class="tabs">
   @for (item of tabs; track item.title) {
-    <div class="tab" (click)="selectTab($index)">
+    <div
+      class="tab"
+      [class.active]="$index === activeTabIndex()"
+      (click)="selectTab($index)"
+    >
       <span>{{ item.title }}</span>
     </div>
   }

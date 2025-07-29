@@ -10,7 +10,7 @@
     "lint": "eslint src --ext .ts,.html --fix",
     "format": "prettier --config .prettierrc --write \"src/**/*.{ts,html,scss,css,json,md}\"",
     "prepare": "husky",
-    "deploy": "ng build --base-href '/exact84-ANGULAR2025Q3/' && npx angular-cli-ghpages --dir=dist/smart-home-ui/browser"
+    "deploy": "ng build --base-href /exact84-ANGULAR2025Q3/ && npx angular-cli-ghpages --dir=dist/smart-home-ui/browser"
   },
   "prettier": {
     "overrides": [

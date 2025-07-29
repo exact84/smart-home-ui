@@ -6,11 +6,15 @@
 .tabs {
   display: flex;
   flex-direction: row;
+  background-color: rgb(0, 54, 54);
 }
 
 .tab {
-  background-color: darkgray;
   padding: 10px;
   margin: 5px;
   cursor: pointer;
+}
+
+.tab.active {
+  border-bottom: 2px solid white;
 }

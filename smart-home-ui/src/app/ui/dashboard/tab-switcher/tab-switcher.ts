@@ -11,7 +11,6 @@ import { CardList } from '../card-list/card-list';
 export class TabSwitcher {
   @Input() tabs: Tab[] = [];
   readonly activeTabIndex = signal(0);
-  // readonly activeTab: computed(() =>computeActiveTab(this.activeTabIndex, this.tabs))
 
   get activeTab(): Tab | undefined {
     const index = this.activeTabIndex();

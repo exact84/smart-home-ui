@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-header',
+  selector: 'app-overview',
   imports: [MatIconModule],
-  templateUrl: './header.html',
-  styleUrl: './header.scss',
+  templateUrl: './overview.html',
+  styleUrl: './overview.scss',
 })
-export class Header {}
+export class Overview {}
