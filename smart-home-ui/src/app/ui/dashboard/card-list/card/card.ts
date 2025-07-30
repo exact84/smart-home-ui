@@ -2,10 +2,11 @@ import { Component, Input } from '@angular/core';
 import { Card as CardType } from '../../../../interfaces/dashboard.model';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { NoContentPipe } from '../../../../pipes/no-content-pipe';
 
 @Component({
   selector: 'app-card',
-  imports: [MatIconModule, MatSlideToggleModule],
+  imports: [MatIconModule, MatSlideToggleModule, NoContentPipe],
   templateUrl: './card.html',
   styleUrl: './card.scss',
 })

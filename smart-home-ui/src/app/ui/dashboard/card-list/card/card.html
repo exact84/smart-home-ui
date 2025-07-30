@@ -8,7 +8,7 @@
         <mat-icon>{{ item.icon }}</mat-icon>
         @if ("value" in item) {
           <span class="value"
-            >{{ item.value.amount }} {{ item.value.unit }}</span
+            >{{ item.value.amount | noContent }} {{ item.value.unit }}</span
           >
         }
       </div>
@@ -23,7 +23,9 @@
       <span class="label">{{ item.label }}</span>
 
       @if ("value" in item) {
-        <span class="value">{{ item.value.amount }} {{ item.value.unit }}</span>
+        <span class="value"
+          >{{ item.value.amount | noContent }} {{ item.value.unit }}</span
+        >
       }
 
       @if ("state" in item) {
@@ -44,7 +46,9 @@
       <span class="label">{{ item.label }}</span>
 
       @if ("value" in item) {
-        <span class="value">{{ item.value.amount }} {{ item.value.unit }}</span>
+        <span class="value"
+          >{{ item.value.amount | noContent }} {{ item.value.unit }}</span
+        >
       }
 
       @if ("state" in item && item.type === "device") {
