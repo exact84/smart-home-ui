@@ -1,17 +1,23 @@
-import { Component } from '@angular/core';
-// import { RouterOutlet } from '@angular/router';
-import { NgComponentOutlet } from '@angular/common';
+import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Sidebar } from '../sidebar/sidebar';
 import { Dashboard } from '../dashboard/dashboard';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   standalone: true,
   selector: 'app-layout',
-  imports: [CommonModule, NgComponentOutlet],
+  imports: [CommonModule, Sidebar, Dashboard, MatIconModule, MatSidenavModule],
   templateUrl: './layout.html',
   styleUrl: './layout.scss',
 })
 export class Layout {
-  components = [Sidebar, Dashboard];
+  isDesktop = window.innerWidth > 800;
+  isSidebarOpened = false;
+
+  @HostListener('window:resize')
+  onResize() {
+    this.isDesktop = window.innerWidth > 800;
+  }
 }

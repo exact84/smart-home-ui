@@ -4,7 +4,12 @@ import { Layout } from './ui/layout/layout';
 export const routes: Routes = [
   {
     path: '',
+    pathMatch: 'full',
     component: Layout,
-    children: [],
+    // children: [],
   },
+  // {
+  //   path: 'card-list',
+  //   loadComponent: () => import('./card-list/card-list').then((m) => m.CardList),
+  // },
 ];

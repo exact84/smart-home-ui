@@ -1,6 +1,34 @@
 :host {
   display: flex;
-  flex-direction: row;
+}
+
+.layout-container {
   height: 100%;
   width: 100%;
+}
+
+.toggle-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+
+  @media (min-width: 800px) {
+    display: none;
+  }
+}
+
+.sidenav {
+  width: 180px;
+
+  @media (max-width: 800px) {
+  }
+}
+
+::ng-deep .mat-drawer {
+  border-radius: 0 !important;
+}
+
+::ng-deep .mat-drawer-side {
+  border-right: none !important;
 }

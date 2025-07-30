@@ -1,3 +1,27 @@
-<ng-container *ngFor="let component of components">
+<!-- <ng-container *ngFor="let component of components">
   <ng-container *ngComponentOutlet="component"></ng-container>
-</ng-container>
+</ng-container> -->
+
+<mat-sidenav-container class="layout-container">
+  <mat-sidenav
+    #sidenav
+    mode="side"
+    [opened]="isDesktop || isSidebarOpened"
+    class="sidenav"
+  >
+    <app-sidebar></app-sidebar>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <button
+      mat-icon-button
+      class="toggle-btn"
+      (click)="sidenav.toggle()"
+      *ngIf="!isDesktop"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <app-dashboard></app-dashboard>
+  </mat-sidenav-content>
+</mat-sidenav-container>
