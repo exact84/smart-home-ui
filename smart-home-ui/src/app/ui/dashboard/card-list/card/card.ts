@@ -18,7 +18,6 @@ export class Card {
   }
 
   get areAllDevicesOn(): boolean {
-    console.log('areAllDevicesOn recalculated');
     const result = this.card.items
       .filter((item) => 'state' in item)
       .some((item) => item.state === true);
