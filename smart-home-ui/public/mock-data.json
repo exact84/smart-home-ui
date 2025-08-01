@@ -54,6 +54,22 @@
             },
             {
               "type": "sensor",
+              "icon": "thermostat",
+              "label": "Temperature1",
+              "value": {
+                "unit": "\u00b0C"
+              }
+            },
+            {
+              "type": "sensor",
+              "icon": "thermostat",
+              "label": "Temperature2",
+              "value": {
+                "amount": 23.5
+              }
+            },
+            {
+              "type": "sensor",
               "icon": "water_drop",
               "label": "Humidity",
               "value": {
