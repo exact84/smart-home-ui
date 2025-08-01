@@ -1,3 +1,6 @@
 @for (item of cards; track item.title) {
-  <app-card [card]="item"></app-card>
+  <app-card
+    [appHighlightActive]="hasActiveDevice(item)"
+    [card]="item"
+  ></app-card>
 }

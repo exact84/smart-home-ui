@@ -13,8 +13,23 @@ import { NoContentPipe } from '../../../../pipes/no-content-pipe';
 export class Card {
   @Input() card!: CardType;
 
-  onToggleDevice(label: string, state: boolean): void {
-    console.log(`Device "${label}" state`, state);
-    // обработка переключения
+  hasAnyState(): boolean {
+    return this.card.items.filter((item) => 'state' in item).length >= 2;
+  }
+
+  get areAllDevicesOn(): boolean {
+    console.log('areAllDevicesOn recalculated');
+    const result = this.card.items
+      .filter((item) => 'state' in item)
+      .some((item) => item.state === true);
+    return result;
+  }
+
+  toggleAllDevices(state: boolean): void {
+    for (const item of this.card.items) {
+      if ('state' in item) {
+        item.state = state;
+      }
+    }
   }
 }

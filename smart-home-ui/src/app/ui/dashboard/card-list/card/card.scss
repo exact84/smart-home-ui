@@ -10,8 +10,8 @@
 }
 
 h3 {
-  margin-bottom: 1rem;
-  font-size: 1.2rem;
+  margin: 0;
+  font-size: 1.5rem;
 }
 
 .sensor-group {
@@ -30,6 +30,7 @@ h3 {
 .row {
   display: flex;
   align-items: center;
+  min-height: 38px;
 
   .label {
     flex-grow: 1;

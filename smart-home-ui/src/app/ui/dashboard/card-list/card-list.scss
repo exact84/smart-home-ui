@@ -3,3 +3,8 @@
   flex-direction: row;
   flex-wrap: wrap;
 }
+
+.active-border {
+  border: solid 1px #42a5f5;
+  transition: border-color 0.3s ease;
+}

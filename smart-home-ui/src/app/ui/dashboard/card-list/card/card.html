@@ -1,4 +1,14 @@
-<h3>{{ card.title }}</h3>
+<div class="row">
+  <h3 class="label">{{ card.title }}</h3>
+  @if (hasAnyState()) {
+    <mat-slide-toggle
+      class="compact-toggle"
+      [checked]="areAllDevicesOn"
+      (change)="toggleAllDevices($event.checked)"
+    >
+    </mat-slide-toggle>
+  }
+</div>
 
 @if (card.layout === "horizontalLayout") {
   <div class="sensor-group">
@@ -32,7 +42,7 @@
         <mat-slide-toggle
           class="compact-toggle"
           [checked]="item.state"
-          (change)="onToggleDevice(item.label, $event.checked)"
+          (change)="item.state = $event.checked"
         ></mat-slide-toggle>
       }
     </div>
@@ -55,7 +65,7 @@
         <mat-slide-toggle
           class="compact-toggle"
           [checked]="item.state"
-          (change)="onToggleDevice(item.label, $event.checked)"
+          (change)="item.state = $event.checked"
         ></mat-slide-toggle>
       }
     </div>
