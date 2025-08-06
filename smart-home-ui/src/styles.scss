@@ -30,19 +30,16 @@ html {
   background-color: var(--mat-sys-surface);
   color: var(--mat-sys-on-surface);
   font: var(--mat-sys-body-medium);
-} /* You can add global styles to this file, and also import other style files */
+}
 
 html,
 body {
   height: 100%;
+  width: 100%;
 }
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-
-h3 {
-  margin-top: 0;
 }
 
 :root {
@@ -54,14 +51,51 @@ h3 {
       unselected-track-color: gray,
       unselected-icon-size: 0px,
       selected-icon-size: 0px,
-      // selected-handle-horizontal-margin: 0px,
       selected-pressed-handle-horizontal-margin: 0px,
       selected-track-outline-color: rgb(0, 162, 255),
-      // disabled-selected-handle-color: gray,
       selected-focus-handle-color: rgb(0, 162, 255),
       selected-focus-track-color: rgb(0, 162, 255),
       selected-hover-handle-color: rgb(0, 162, 255),
       selected-hover-track-color: rgb(0, 162, 255),
     )
   );
+}
+
+h3 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.sensor-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+
+  .sensor {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.sensor {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  width: 100%;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  min-height: 38px;
+}
+
+.label {
+  flex-grow: 1;
+}
+
+.device {
+  display: flex;
+  align-items: center;
+  width: 100%;
 }

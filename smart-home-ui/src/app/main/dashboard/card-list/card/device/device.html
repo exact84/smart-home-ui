@@ -1,0 +1,9 @@
+<div class="device">
+  <mat-icon>{{ item.icon }}</mat-icon>
+  <span class="label">{{ item.label }}</span>
+  <mat-slide-toggle
+    class="compact-toggle"
+    [checked]="item.state"
+    (change)="toggleState($event.checked)"
+  ></mat-slide-toggle>
+</div>

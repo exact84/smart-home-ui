@@ -1,15 +1,21 @@
 import { Routes } from '@angular/router';
-import { Layout } from './ui/layout/layout';
+import { Layout } from './main/layout/layout';
+import { Dashboard } from './main/dashboard/dashboard';
 
 export const routes: Routes = [
   {
     path: '',
-    pathMatch: 'full',
     component: Layout,
-    // children: [],
+    children: [
+      {
+        path: 'dashboard/:id',
+        component: Dashboard,
+      },
+      {
+        path: '',
+        redirectTo: '/dashboard/overview',
+        pathMatch: 'full',
+      },
+    ],
   },
-  // {
-  //   path: 'card-list',
-  //   loadComponent: () => import('./card-list/card-list').then((m) => m.CardList),
-  // },
 ];

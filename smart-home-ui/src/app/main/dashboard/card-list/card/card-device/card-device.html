@@ -1,0 +1,18 @@
+@for (item of card.items; track item.label) {
+  <div class="row">
+    <mat-icon>{{ item.icon }}</mat-icon>
+    <span class="label">{{ item.label }}</span>
+
+    @if (isSensor(item)) {
+      <span class="value">{{ item.value | sensorValue }}</span>
+    }
+
+    @if (isDevice(item)) {
+      <mat-slide-toggle
+        class="compact-toggle"
+        [checked]="item.state"
+        (change)="onToggleDeviceState(item, $event.checked)"
+      ></mat-slide-toggle>
+    }
+  </div>
+}

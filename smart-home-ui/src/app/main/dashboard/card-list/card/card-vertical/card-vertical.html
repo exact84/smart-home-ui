@@ -1,0 +1,8 @@
+@for (item of card.items; track item.label) {
+  @if (isSensor(item)) {
+    <app-sensor [item]="item" />
+  }
+  @if (isDevice(item)) {
+    <app-device [item]="item" />
+  }
+}

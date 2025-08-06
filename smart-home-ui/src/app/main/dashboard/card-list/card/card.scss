@@ -1,0 +1,15 @@
+:host {
+  display: block;
+  background: #1e1e1e;
+  color: white;
+  padding: 1rem;
+  border: solid 1px #3b3b3b;
+  border-radius: 12px;
+  min-width: 200px;
+  // height: fit-content;
+  margin: 2px;
+}
+
+:host ::ng-deep mat-icon {
+  margin: 10px;
+}

@@ -1,0 +1,11 @@
+:host {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+}
+
+.active-border {
+  border: solid 1px #42a5f5;
+  transition: border-color 0.3s ease;
+}

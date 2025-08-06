@@ -1,0 +1,23 @@
+<div class="row">
+  <h3 class="label">{{ card.title }}</h3>
+  @if (hasAnyState()) {
+    <mat-slide-toggle
+      class="compact-toggle"
+      [checked]="areAllDevicesOn"
+      (change)="toggleAllDevices($event.checked)"
+    >
+    </mat-slide-toggle>
+  }
+</div>
+
+@switch (card.layout) {
+  @case (layoutEnum.Horizontal) {
+    <app-card-horizontal [card]="card" />
+  }
+  @case (layoutEnum.Vertical) {
+    <app-card-vertical [card]="card" />
+  }
+  @case (layoutEnum.SingleDevice) {
+    <app-card-device [card]="card" />
+  }
+}
