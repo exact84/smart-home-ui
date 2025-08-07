@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
-import { Layout } from './main/layout/layout';
-import { Dashboard } from './main/dashboard/dashboard';
+import { Layout } from '@components/layout/layout';
+import { Dashboard } from '@components/dashboard/dashboard';
+import { NotFound } from '@components/not-found/not-found';
 
 export const routes: Routes = [
   {
@@ -17,5 +18,9 @@ export const routes: Routes = [
         pathMatch: 'full',
       },
     ],
+  },
+  {
+    path: '**',
+    component: NotFound,
   },
 ];
