@@ -8,7 +8,8 @@
       "@models/*": ["app/models/*"],
       "@components/*": ["app/main/*"],
       "@directives/*": ["app/directives/*"],
-      "@pipes/*": ["app/pipes/*"]
+      "@pipes/*": ["app/pipes/*"],
+      "@services/*": ["app/services/*"]
     }
   },
   "include": ["src/**/*.ts"],

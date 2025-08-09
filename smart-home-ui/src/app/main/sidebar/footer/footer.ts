@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { AuthResponse } from '@models/auth.model';
+import { Auth } from '@services/auth/auth';
 
 @Component({
   selector: 'app-footer',
@@ -7,4 +9,16 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './footer.html',
   styleUrl: './footer.scss',
 })
-export class Footer {}
+export class Footer implements OnInit {
+  authService = inject(Auth);
+  user: AuthResponse | undefined;
+  onLogout() {
+    this.authService.logout();
+  }
+
+  ngOnInit() {
+    this.authService.user$.subscribe((user) => {
+      this.user = user;
+    });
+  }
+}

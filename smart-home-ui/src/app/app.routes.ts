@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { Layout } from '@components/layout/layout';
 import { Dashboard } from '@components/dashboard/dashboard';
 import { NotFound } from '@components/not-found/not-found';
+import { Login } from '@components/login/login';
 
 export const routes: Routes = [
   {
@@ -18,6 +19,10 @@ export const routes: Routes = [
         pathMatch: 'full',
       },
     ],
+  },
+  {
+    path: 'login',
+    component: Login,
   },
   {
     path: '**',

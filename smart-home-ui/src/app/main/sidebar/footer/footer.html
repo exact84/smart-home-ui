@@ -1,1 +1,12 @@
-<mat-icon>public</mat-icon> <span>RS School. Angular</span>
+<div class="item">
+  <mat-icon>info</mat-icon
+  ><span>{{ user?.fullName }} {{ user?.initials }}</span>
+</div>
+<div class="item" title="Logout" (click)="onLogout()">
+  <mat-icon>logout</mat-icon> <span>Logout</span>
+</div>
+<div class="item">
+  <a href="https://rs.school/courses/angular" target="_blank"
+    ><mat-icon>public</mat-icon> <span>RS School. Angular</span>
+  </a>
+</div>

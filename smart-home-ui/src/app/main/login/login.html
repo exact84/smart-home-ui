@@ -1,0 +1,25 @@
+<form class="login-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <h1>Login</h1>
+  <label for="username"
+    >Username:
+    <input
+      formControlName="username"
+      class="login-input"
+      type="text"
+      placeholder="Username"
+    />
+  </label>
+  <label for="password"
+    >Password:
+    <input
+      formControlName="password"
+      class="login-input"
+      type="password"
+      placeholder="Password"
+    />
+  </label>
+  @if (isError) {
+    <div class="error">Invalid username or password</div>
+  }
+  <button class="button" type="submit">Login</button>
+</form>

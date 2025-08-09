@@ -18,7 +18,7 @@ export class Dashboard implements OnInit {
   };
 
   ngOnInit() {
-    this.http.get<DashboardData>('api/mock-data.json').subscribe((data) => {
+    this.http.get<DashboardData>('mock-data.json').subscribe((data) => {
       this.data = data;
     });
   }
