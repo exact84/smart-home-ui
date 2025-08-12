@@ -33,6 +33,20 @@ module.exports = tseslint.config(
         "error",
         { type: "attribute", prefix: "app", style: "camelCase" },
       ],
+      "unicorn/consistent-function-scoping": [
+        "error",
+        {
+          checkArrowFunctions: true,
+          checkFunctionDeclarations: true,
+          checkFunctionExpressions: true,
+          ignoreMethods: [
+            // Ignore arrow functions inside Signals
+            "computed",
+            "effect",
+          ],
+        },
+      ],
+      "unicorn/no-useless-undefined": "off",
       "unicorn/better-regex": "error",
       "unicorn/no-empty-file": "error",
       "unicorn/prevent-abbreviations": "off",
