@@ -20,7 +20,7 @@ type LoginFormData = {
 })
 export class Login {
   authService = inject(Auth);
-  isError = false;
+  loginError = undefined;
 
   form = new FormGroup<LoginFormData>({
     username: new FormControl('', {
@@ -39,9 +39,9 @@ export class Login {
       next: () => {
         this.authService.router.navigate(['/dashboard/overview']);
       },
-      error: () => {
-        this.isError = true;
-        console.log('Login error');
+      error: (error) => {
+        // if (error.status === 401) this.isError = false;
+        this.loginError = error.status;
       },
     });
   }

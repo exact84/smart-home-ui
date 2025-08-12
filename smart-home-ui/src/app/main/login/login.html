@@ -18,8 +18,12 @@
       placeholder="Password"
     />
   </label>
-  @if (isError) {
-    <div class="error">Invalid username or password</div>
+  @if (loginError === 401) {
+    <div class="error">Invalid username or password.</div>
+  }
+  @if (loginError !== 401 && loginError !== undefined) {
+    <div class="error">Unknown error occurred.</div>
+    <div>Please try again later.</div>
   }
   <button class="button" type="submit">Login</button>
 </form>
