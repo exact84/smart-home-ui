@@ -3,10 +3,12 @@ import { inject } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 
 import { Router } from '@angular/router';
+import { TokenStorage } from '@services/token-storage';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const tokenStorage = inject(TokenStorage);
   const router = inject(Router);
-  const token = localStorage.getItem('smart_home_access_token');
+  const token = tokenStorage.getToken();
 
   if (!req.url.startsWith('http') && !req.url.startsWith('/api')) {
     req = req.clone({
@@ -23,7 +25,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     catchError((error) => {
       if (error.status === 401) {
-        localStorage.removeItem('smart_home_access_token');
+        tokenStorage.removeToken();
         router.navigate(['/login']);
       }
       return throwError(() => error);

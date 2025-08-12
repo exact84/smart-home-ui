@@ -2,12 +2,14 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthResponse } from '@models/auth.model';
+import { TokenStorage } from '@services/token-storage';
 import { BehaviorSubject, switchMap, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Auth {
+  tokenStorage = inject(TokenStorage);
   http: HttpClient = inject(HttpClient);
   router = inject(Router);
   baseApiUrl = 'http://localhost:3004/api/';
@@ -24,18 +26,13 @@ export class Auth {
     return this.http
       .post<{ token: string }>(`${this.baseApiUrl}user/login`, body)
       .pipe(
-        tap((res) => {
-          const token = res.token;
-          console.log('Token received:', token);
-          localStorage.setItem('smart_home_access_token', token);
-        }),
+        tap((res) => this.tokenStorage.saveToken(res.token)),
         switchMap((res) => this.loadUserData(res.token)),
-        tap(() => this.router.navigate(['/dashboard/overview'])),
       );
   }
 
   logout() {
-    localStorage.removeItem('smart_home_access_token');
+    this.tokenStorage.removeToken();
     this.router.navigate(['/login']);
   }
 
