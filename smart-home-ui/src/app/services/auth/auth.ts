@@ -1,9 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthResponse } from '@models/auth.model';
 import { TokenStorage } from '@services/token-storage';
-import { BehaviorSubject, switchMap, tap } from 'rxjs';
+import { switchMap, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -13,11 +13,8 @@ export class Auth {
   http: HttpClient = inject(HttpClient);
   router = inject(Router);
   baseApiUrl = 'http://localhost:3004/api/';
-  userData?: AuthResponse;
-  private userSubject = new BehaviorSubject<AuthResponse | undefined>(
-    undefined,
-  );
-  user$ = this.userSubject.asObservable();
+  userSubject = signal<AuthResponse | undefined>(undefined);
+  isAuthenticated = computed(() => this.userSubject() !== undefined);
 
   login(payload: { username: string; password: string }) {
     const body = new HttpParams()
@@ -34,16 +31,13 @@ export class Auth {
   logout() {
     this.tokenStorage.removeToken();
     this.router.navigate(['/login']);
+    this.userSubject.set(undefined);
   }
 
   loadUserData(token: string) {
     const headers = { Authorization: `Bearer ${token}` };
     return this.http
       .get<AuthResponse>(`${this.baseApiUrl}user/profile`, { headers })
-      .pipe(tap((response) => this.userSubject.next(response)));
-  }
-
-  getUserData() {
-    return this.userData;
+      .pipe(tap((response) => this.userSubject.set(response)));
   }
 }

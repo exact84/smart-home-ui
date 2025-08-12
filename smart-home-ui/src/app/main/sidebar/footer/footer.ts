@@ -9,16 +9,10 @@ import { Auth } from '@services/auth/auth';
   templateUrl: './footer.html',
   styleUrl: './footer.scss',
 })
-export class Footer implements OnInit {
+export class Footer {
   authService = inject(Auth);
   user: AuthResponse | undefined;
   onLogout() {
     this.authService.logout();
-  }
-
-  ngOnInit() {
-    this.authService.user$.subscribe((user) => {
-      this.user = user;
-    });
   }
 }

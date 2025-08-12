@@ -1,0 +1,1 @@
+export const SIDEBAR_DESKTOP_BREAKPOINT = 800;
