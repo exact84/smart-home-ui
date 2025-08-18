@@ -67,7 +67,6 @@ export class Dashboard {
   }
 
   async onDashboardSelect(dashboardId: string) {
-    console.log('onDashboardSelect started:', dashboardId);
     this.dashboard.getDashboardData(dashboardId);
     this.router.navigate([
       '/dashboard',
@@ -77,7 +76,6 @@ export class Dashboard {
   }
 
   onTabSelect(tabId: string) {
-    console.log('onTabSelect started:', tabId);
     this.dashboard.setTab(tabId);
     this.router.navigate([
       '/dashboard',

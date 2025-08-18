@@ -15,7 +15,6 @@ export class DashboardMenu {
   router = inject(Router);
 
   onDashboardClick(selectedDashboard: DashboardList) {
-    console.log('onDashboardClick started:', selectedDashboard, this.dashboard.selectedDashboard());
     if (this.dashboard.selectedDashboard()?.id === selectedDashboard.id) {
       return;
     }

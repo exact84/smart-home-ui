@@ -18,7 +18,6 @@ export class DashboardService {
   http: HttpClient = inject(HttpClient);
 
   getDashboardList(currentDashboardId?: string) {
-    console.log('getDashboardList started:', currentDashboardId);
     this.http
       .get<DashboardList[]>(`${BASE_API_URL}dashboards`)
       .subscribe((list) => {
@@ -35,7 +34,6 @@ export class DashboardService {
 
   selectDashboard(dashboard: DashboardList) {
     if (this.selectedDashboard()?.id === dashboard.id) return;
-    console.log('selectDashboard started:', dashboard);
     this.selectedDashboard.set(dashboard);
     this.getDashboardData(dashboard.id);
   }
@@ -48,7 +46,6 @@ export class DashboardService {
     this.http
       .get<DashboardData>(`${BASE_API_URL}dashboards/${dashboardId}`)
       .subscribe((data) => {
-        console.log('getDashboardData started:', data, dashboardId);
         this.dashboardData.set({
           dashboardId,
           tabs: data.tabs,
