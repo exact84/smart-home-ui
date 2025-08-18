@@ -3,6 +3,7 @@ import { Tab } from '@models/index';
 import { CardList } from '../card-list/card-list';
 import { DashboardService } from '@services/dashboard';
 import { ActivatedRoute, Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-tab-switcher',
@@ -18,16 +19,24 @@ export class TabSwitcher {
   route = inject(ActivatedRoute);
 
   constructor() {
-    this.route.paramMap.subscribe((params) => {
-      const tabId = params.get('tabId');
-      const dashboardId = params.get('dashboardId');
+    effect(() => {
       const data = this.dashboard.dashboardData();
-
+      const tabId = this.route.snapshot.paramMap.get('tabId');
+      const dashboardId = this.route.snapshot.paramMap.get('dashboardId');
       if (!tabId || !dashboardId || data.tabs.length === 0) return;
 
       const index = data.tabs.findIndex((t) => t.id === tabId);
       if (index >= 0 && this.activeTabIndex() !== index) {
         this.activeTabIndex.set(index);
+      }
+    });
+  }
+
+  ngOnInit() {
+    this.route.paramMap.subscribe((params) => {
+      const dashboardId = params.get('dashboardId');
+      if (dashboardId) {
+        this.dashboard.getDashboardData(dashboardId);
       }
     });
   }

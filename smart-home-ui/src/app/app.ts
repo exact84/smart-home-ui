@@ -21,11 +21,9 @@ export class App implements OnInit {
       this.authService.loadUserData(token).subscribe({
         next: () => {
           console.log('Login performed via LocalStorage');
-          this.router.routerState.root.firstChild?.paramMap.subscribe(params => {
-            const currentUrl = this.router.url;
-              if (!currentUrl.includes('/dashboard/')) {
-                this.authService.router.navigate(['/dashboard']);
-              }
+          this.router.routerState.root.firstChild?.paramMap.subscribe(() => {
+            if (!this.router.url.includes('/dashboard/'))
+              this.authService.router.navigate(['/dashboard']);
           });
         },
       });
