@@ -1,7 +1,5 @@
 import { Routes } from '@angular/router';
 import { Layout } from '@components/layout/layout';
-import { Dashboard } from '@components/dashboard/dashboard';
-import { NotFound } from '@components/not-found/not-found';
 import { Login } from '@components/login/login';
 
 export const routes: Routes = [
@@ -10,12 +8,23 @@ export const routes: Routes = [
     component: Layout,
     children: [
       {
-        path: 'dashboard/:id',
-        component: Dashboard,
+        path: 'dashboard/:dashboardId/:tabId',
+        loadComponent: () =>
+          import('@components/dashboard/dashboard').then((m) => m.Dashboard),
+      },
+      {
+        path: 'dashboard/:dashboardId',
+        loadComponent: () =>
+          import('@components/dashboard/dashboard').then((m) => m.Dashboard),
+      },
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('@components/dashboard/dashboard').then((m) => m.Dashboard),
       },
       {
         path: '',
-        redirectTo: '/dashboard/overview',
+        redirectTo: 'dashboard',
         pathMatch: 'full',
       },
     ],
@@ -26,6 +35,7 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    component: NotFound,
+    loadComponent: () =>
+      import('@components/not-found/not-found').then((m) => m.NotFound),
   },
 ];

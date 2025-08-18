@@ -37,10 +37,9 @@ export class Login {
     const loginData = this.form.getRawValue();
     this.authService.login(loginData).subscribe({
       next: () => {
-        this.authService.router.navigate(['/dashboard/overview']);
+        this.authService.router.navigate(['/dashboard']);
       },
       error: (error) => {
-        // if (error.status === 401) this.isError = false;
         this.loginError = error.status;
       },
     });

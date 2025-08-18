@@ -1,1 +1,10 @@
-<app-tab-switcher [tabs]="data.tabs"></app-tab-switcher>
+@if (dashboard.dashboardList().length > 0) {
+  <app-tab-switcher [tabs]="dashboard.dashboardData().tabs"></app-tab-switcher>
+} @else {
+  <div class="info">
+    <span
+      >You don’t have any dashboards yet. They’ll appear here as soon as you
+      create them</span
+    >
+  </div>
+}

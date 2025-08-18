@@ -1,25 +1,88 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TabSwitcher } from './tab-switcher/tab-switcher';
-import { HttpClient } from '@angular/common/http';
-import { DashboardData } from '@models/index';
+import { DashboardService } from '@services/dashboard';
+import { MatIconModule } from '@angular/material/icon';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   standalone: true,
   selector: 'app-dashboard',
-  imports: [TabSwitcher, CommonModule],
+  imports: [TabSwitcher, CommonModule, MatIconModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
-export class Dashboard implements OnInit {
-  private http = inject(HttpClient);
-  data: DashboardData = {
-    tabs: [],
-  };
+export class Dashboard {
+  dashboard = inject(DashboardService);
+  router = inject(Router);
+  route = inject(ActivatedRoute);
+  private subscription: Subscription = new Subscription();
+  private lastDashboardId: string | null = null;
+
+  normalizeRouteEffect = effect(() => {
+    const data = this.dashboard.dashboardData();
+    const currentDashboardId = data.dashboardId;
+    const tabs = data.tabs;
+
+    const routeDashboardId = this.route.snapshot.paramMap.get('dashboardId');
+    const routeTabId = this.route.snapshot.paramMap.get('tabId');
+
+    if (routeDashboardId !== null) {
+      const list = this.dashboard.dashboardList();
+      const found = list.find((d) => d.id === routeDashboardId);
+      if (found && currentDashboardId !== routeDashboardId) {
+        this.dashboard.selectDashboard(found);
+        return;
+      }
+    }
+
+    if (tabs.length === 0) return;
+
+    const isValidTab = tabs.some((t) => t.id === routeTabId);
+    if (!isValidTab) {
+      this.router.navigate(['/dashboard', currentDashboardId, tabs[0].id]);
+      return;
+    }
+  });
 
   ngOnInit() {
-    this.http.get<DashboardData>('mock-data.json').subscribe((data) => {
-      this.data = data;
-    });
+    this.subscription.add(
+      this.route.paramMap.subscribe((params) => {
+        const dashboardId = params.get('dashboardId');
+
+        const shouldLoad =
+          this.dashboard.dashboardList().length === 0 ||
+          dashboardId !== this.lastDashboardId;
+        if (shouldLoad) {
+          this.dashboard.getDashboardList(dashboardId || undefined);
+          this.lastDashboardId = dashboardId;
+        }
+      }),
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  async onDashboardSelect(dashboardId: string) {
+    console.log('onDashboardSelect started:', dashboardId);
+    this.dashboard.getDashboardData(dashboardId);
+    this.router.navigate([
+      '/dashboard',
+      dashboardId,
+      this.dashboard.selectedTab(),
+    ]);
+  }
+
+  onTabSelect(tabId: string) {
+    console.log('onTabSelect started:', tabId);
+    this.dashboard.setTab(tabId);
+    this.router.navigate([
+      '/dashboard',
+      this.dashboard.selectedDashboard().id,
+      tabId,
+    ]);
   }
 }

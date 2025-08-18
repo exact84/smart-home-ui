@@ -1,9 +1,6 @@
 <div class="item">
-  <mat-icon>info</mat-icon
-  ><span
-    >{{ authService.userSubject()?.fullName }}
-    {{ authService.userSubject()?.initials }}</span
-  >
+  <mat-icon>info</mat-icon><span>{{ authService.userSubject()?.fullName }}</span
+  ><span class="initials"> {{ authService.userSubject()?.initials }}</span>
 </div>
 <div class="item" title="Logout" (click)="onLogout()">
   <mat-icon>logout</mat-icon> <span>Logout</span>
