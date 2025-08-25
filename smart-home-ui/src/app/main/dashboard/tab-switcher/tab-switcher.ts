@@ -1,59 +1,35 @@
-import { Component, effect, inject, Input, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Tab } from '@models/index';
 import { CardList } from '../card-list/card-list';
 import { DashboardService } from '@services/dashboard';
 import { ActivatedRoute, Router } from '@angular/router';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Store } from '@ngrx/store';
+import { combineLatest, map } from 'rxjs';
+import { selectTabId, selectTabs } from '@store/dashboard/dashboard.selectors';
+import { AsyncPipe } from '@angular/common';
+import { DashboardFacade } from '@store/dashboard/dashboard.facade';
 
 @Component({
   selector: 'app-tab-switcher',
-  imports: [CardList],
+  imports: [CardList, AsyncPipe],
   templateUrl: './tab-switcher.html',
   styleUrl: './tab-switcher.scss',
 })
 export class TabSwitcher {
-  @Input() tabs: Tab[] = [];
   readonly activeTabIndex = signal(0);
   dashboard = inject(DashboardService);
   router = inject(Router);
   route = inject(ActivatedRoute);
+  private store = inject(Store);
+  facade: DashboardFacade = inject(DashboardFacade);
+  readonly tabs$ = this.store.select(selectTabs);
 
-  constructor() {
-    effect(() => {
-      const data = this.dashboard.dashboardData();
-      const tabId = this.route.snapshot.paramMap.get('tabId');
-      const dashboardId = this.route.snapshot.paramMap.get('dashboardId');
-      if (!tabId || !dashboardId || data.tabs.length === 0) return;
+  readonly activeTab$ = combineLatest([
+    this.store.select(selectTabId),
+    this.tabs$,
+  ]).pipe(map(([tabId, tabs]) => tabs.find((t) => t.id === tabId)));
 
-      const index = data.tabs.findIndex((t) => t.id === tabId);
-      if (index >= 0 && this.activeTabIndex() !== index) {
-        this.activeTabIndex.set(index);
-      }
-    });
-  }
-
-  ngOnInit() {
-    this.route.paramMap.subscribe((params) => {
-      const dashboardId = params.get('dashboardId');
-      if (dashboardId) {
-        this.dashboard.getDashboardData(dashboardId);
-      }
-    });
-  }
-
-  get activeTab(): Tab | undefined {
-    const index = this.activeTabIndex();
-    return this.tabs.length > index ? this.tabs[index] : undefined;
-  }
-
-  selectTab(index: number): void {
-    this.activeTabIndex.set(index);
-    const dashboardId = this.route.snapshot.paramMap.get('dashboardId');
-    const data = this.dashboard.dashboardData();
-    this.router.navigate([
-      '/dashboard',
-      dashboardId,
-      data.tabs[this.activeTabIndex()].id,
-    ]);
+  selectTab(tab: Tab): void {
+    this.facade.selectTab(tab.id);
   }
 }

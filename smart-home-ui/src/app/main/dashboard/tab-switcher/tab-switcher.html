@@ -1,16 +1,19 @@
+@let tabs = tabs$ | async;
 <div class="tabs">
   @for (item of tabs; track item.title) {
     <div
       class="tab"
-      [class.active]="$index === activeTabIndex()"
-      (click)="selectTab($index)"
+      [class.active]="(activeTab$ | async)?.id === item.id"
+      (click)="selectTab(item)"
     >
       <span>{{ item.title }}</span>
     </div>
   }
 </div>
 
-@if (activeTab) {
-  @let tab = activeTab;
-  <app-card-list [cards]="tab.cards"></app-card-list>
+@if (activeTab$ | async) {
+  @let tab = activeTab$ | async;
+  @if (tab) {
+    <app-card-list [cards]="tab.cards"></app-card-list>
+  }
 }

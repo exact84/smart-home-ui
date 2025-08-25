@@ -9,7 +9,8 @@
       "@components/*": ["app/main/*"],
       "@directives/*": ["app/directives/*"],
       "@pipes/*": ["app/pipes/*"],
-      "@services/*": ["app/services/*"]
+      "@services/*": ["app/services/*"],
+      "@store/*": ["app/store/*"]
     }
   },
   "include": ["src/**/*.ts"],

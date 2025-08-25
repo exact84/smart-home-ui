@@ -1,4 +1,4 @@
-@for (dashboard of dashboard.dashboardList(); track dashboard.id) {
+@for (dashboard of dashboardList(); track dashboard.id) {
   <div class="menuitem" (click)="onDashboardClick(dashboard)">
     <mat-icon>{{ dashboard.icon }}</mat-icon>
     <span>{{ dashboard.title }}</span>
