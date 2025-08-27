@@ -1,14 +1,33 @@
 @let tabs = tabs$ | async;
-<div class="tabs">
-  @for (item of tabs; track item.title) {
-    <div
-      class="tab"
-      [class.active]="(activeTab$ | async)?.id === item.id"
-      (click)="selectTab(item)"
-    >
-      <span>{{ item.title }}</span>
+<div class="header">
+  <div class="tabs">
+    @if (tabs?.length) {
+      @for (item of tabs; track item.title) {
+        <div
+          class="tab"
+          [class.active]="(activeTab$ | async)?.id === item.id"
+          (click)="selectTab(item)"
+        >
+          <span>{{ item.title }}</span>
+        </div>
+      }
+    } @else {
+      <div class="info">
+        <span>
+          You don’t have any dashboards yet. They’ll appear here as soon as you
+          create them
+        </span>
+      </div>
+    }
+  </div>
+  <div class="icons">
+    <div class="icon" (click)="onEditDashboardClick()">
+      <mat-icon>edit</mat-icon>
     </div>
-  }
+    <div class="icon" (click)="onRemoveDashboardClick()">
+      <mat-icon>delete</mat-icon>
+    </div>
+  </div>
 </div>
 
 @if (activeTab$ | async) {
@@ -17,3 +36,7 @@
     <app-card-list [cards]="tab.cards"></app-card-list>
   }
 }
+
+<!-- <ng-template #confirmationTemplate>
+  <button mat-button color="primary" (click)="confirmDelete()">Create</button>
+</ng-template> -->

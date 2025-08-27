@@ -1,0 +1,30 @@
+<div class="menuitem" (click)="onNewDashboardClick()">
+  <mat-icon>plus_one</mat-icon>
+  <span>Add new dashboard</span>
+</div>
+
+<ng-template #dialogTemplate let-dialogRef>
+  <h2 mat-dialog-title>Create new dashboard</h2>
+
+  <mat-dialog-content>
+    <mat-form-field appearance="fill">
+      <input matInput [(ngModel)]="id" placeholder="Id" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <input matInput [(ngModel)]="title" placeholder="Title" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <input matInput [(ngModel)]="icon" placeholder="Icon name" required />
+    </mat-form-field>
+    @if (error) {
+      <mat-error>{{ error }}</mat-error>
+    }
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="closeDialog()">Cancel</button>
+    <button mat-button color="primary" (click)="submit()">Create</button>
+  </mat-dialog-actions>
+</ng-template>

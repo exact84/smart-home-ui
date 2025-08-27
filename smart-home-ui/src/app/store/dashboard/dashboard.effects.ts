@@ -61,6 +61,14 @@ export class DashboardEffects {
           map((data) => {
             console.log('loadDashboard$: ', dashboardId, tabId);
             const tabs = data.tabs ?? [];
+            if (!tabs.length) {
+              this.router.navigate(['/dashboard', dashboardId]);
+              return DashboardActions.loadDashboardSuccess({
+                data,
+                dashboardId,
+                tabId: '',
+              });
+            }
             const valid = tabs.some((t) => t.id === tabId);
             const finalTabId = valid ? tabId : (tabs[0]?.id ?? '');
             if (tabId !== finalTabId) {

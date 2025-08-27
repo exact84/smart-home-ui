@@ -1,7 +1,5 @@
-@let dashboard = dashboard$ | async;
 @let error = error$ | async;
 @let loading = loading$ | async;
-@let tabs = dashboard?.tabs;
 @if (error) {
   <div class="error">
     <span>{{ error }}</span>
@@ -9,13 +7,5 @@
 } @else if (loading) {
   <div class="loading">Loading...</div>
   <img src="loading.gif" alt="Loader" />
-} @else if (tabs?.length) {
-  <app-tab-switcher></app-tab-switcher>
-} @else {
-  <div class="info">
-    <span>
-      You don’t have any dashboards yet. They’ll appear here as soon as you
-      create them
-    </span>
-  </div>
 }
+<app-tab-switcher></app-tab-switcher>

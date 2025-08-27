@@ -1,14 +1,15 @@
-import { Component, effect, inject } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { DashboardList } from '@models/dashboard-list.model';
 import { Store } from '@ngrx/store';
 import { DashboardService } from '@services/dashboard';
 import { loadDashboard } from 'app/store/dashboard/dashboard.actions';
+import { AddDashboard } from '../add-dashboard/add-dashboard';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-dashboard-menu',
-  imports: [MatIconModule],
+  imports: [MatIconModule, AddDashboard],
   templateUrl: './dashboard-menu.html',
   styleUrl: './dashboard-menu.scss',
 })

@@ -1,8 +1,10 @@
 import { createReducer, on } from '@ngrx/store';
 import * as DashboardActions from './dashboard.actions';
 import { DashboardData } from '@models/dashboard.model';
+import { DashboardList } from '@models/dashboard-list.model';
 
 export interface DashboardState {
+  dashboardList: DashboardList | null;
   data: DashboardData | null;
   dashboardId: string | null;
   tabId: string | null;
@@ -11,6 +13,7 @@ export interface DashboardState {
 }
 
 export const initialState: DashboardState = {
+  dashboardList: null,
   data: null,
   dashboardId: null,
   tabId: null,
