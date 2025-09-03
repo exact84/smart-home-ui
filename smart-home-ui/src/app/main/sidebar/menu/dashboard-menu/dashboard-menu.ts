@@ -6,6 +6,7 @@ import { DashboardService } from '@services/dashboard';
 import { loadDashboard } from 'app/store/dashboard/dashboard.actions';
 import { AddDashboard } from '../add-dashboard/add-dashboard';
 import { MatIconModule } from '@angular/material/icon';
+import { DashboardFacade } from '@store/dashboard/dashboard.facade';
 
 @Component({
   selector: 'app-dashboard-menu',
@@ -17,7 +18,9 @@ export class DashboardMenu {
   dashboard = inject(DashboardService);
   router = inject(Router);
   private store = inject(Store);
+  facade: DashboardFacade = inject(DashboardFacade);
   dashboardList = this.dashboard.dashboardList;
+  editMode = this.facade.editMode;
 
   constructor() {
     this.dashboard.getDashboardList().subscribe((dashboardList) => {
@@ -26,6 +29,10 @@ export class DashboardMenu {
   }
 
   onDashboardClick(selectedDashboard: DashboardList) {
+    if (this.editMode()) {
+      // не переходить если в режиме редактирования
+      return;
+    }
     this.store.dispatch(
       loadDashboard({ dashboardId: selectedDashboard.id, tabId: '' }),
     );

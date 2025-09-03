@@ -53,4 +53,46 @@ export const dashboardReducer = createReducer(
     ...state,
     tabId,
   })),
+
+  on(DashboardActions.addTab, (state, { title, tabId }) => {
+    const tabs = [...(state.data?.tabs ?? []), { id: tabId, title, cards: [] }];
+
+    return {
+      ...state,
+      data: state.data ? { ...state.data, tabs } : { tabs },
+      tabId,
+    };
+  }),
+
+  on(DashboardActions.deleteTab, (state, { tabId }) => ({
+    ...state,
+    data: {
+      ...state.data,
+      tabs: state.data!.tabs.filter((tab) => tab.id !== tabId),
+    },
+    tabId: state.tabId === tabId ? null : state.tabId, // если удаляем активный таб, то переключаемся на первый
+  })),
+
+  on(DashboardActions.reorderTab, (state, { tabId, direction }) => {
+    const tabs = [...state.data!.tabs];
+    const index = tabs.findIndex((t) => t.id === tabId);
+
+    const newIndex = direction === 'left' ? index - 1 : index + 1;
+    if (newIndex < 0 || newIndex >= tabs.length) return state;
+
+    [tabs[index], tabs[newIndex]] = [tabs[newIndex], tabs[index]];
+
+    return {
+      ...state,
+      data: {
+        ...state.data,
+        tabs,
+      },
+    };
+  }),
+
+  on(DashboardActions.updateDashboardSuccess, (state, { data }) => ({
+    ...state,
+    data,
+  })),
 );

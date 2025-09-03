@@ -9,9 +9,17 @@
 
 .toggle-btn {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 8px;
+  left: 8px;
   z-index: 1000;
+  background-color: black;
+  border: none;
+
+  &:hover {
+    cursor: pointer;
+    background-color: rgb(37, 37, 37);
+    border: solid 1px;
+  }
 
   @media (min-width: 800px) {
     display: none;

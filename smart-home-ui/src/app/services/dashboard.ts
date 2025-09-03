@@ -50,4 +50,11 @@ export class DashboardService {
         }),
       );
   }
+
+  updateDashboard(dashboardId: string, data: DashboardData) {
+    return this.http.put<DashboardData>(
+      `${BASE_API_URL}dashboards/${dashboardId}`,
+      data,
+    );
+  }
 }
