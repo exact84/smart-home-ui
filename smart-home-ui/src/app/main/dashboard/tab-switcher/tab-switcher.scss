@@ -77,6 +77,11 @@
   padding: 4px 10px;
 }
 
+.button:hover {
+  border: solid 1px rgb(84, 207, 255);
+  color: rgb(84, 207, 255);
+}
+
 .dashboard-title {
   display: flex;
   align-items: center;

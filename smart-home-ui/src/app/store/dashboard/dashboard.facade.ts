@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { DashboardData } from '@models/dashboard.model';
 import { firstValueFrom } from 'rxjs';
 import { Tab } from '@models/tab.model';
+import { Card } from '@models/card.model';
 
 @Injectable({ providedIn: 'root' })
 export class DashboardFacade {
@@ -68,7 +69,25 @@ export class DashboardFacade {
     );
   }
 
-  //   updateTabTitle(tabId: string, newTitle: string) {
-  //   this.store.dispatch(DashboardActions.updateTabTitle({ tabId, title: newTitle }));
-  // }
+  reorderCard(tabId: string, cardId: string, direction: 'left' | 'right') {
+    this.store.dispatch(
+      DashboardActions.reorderCard({ tabId, cardId, direction }),
+    );
+  }
+
+  toggleDevice(deviceId: string, status: boolean) {
+    this.store.dispatch(DashboardActions.toggleDevice({ deviceId, status }));
+  }
+
+  addCard(tabId: string, card: Card) {
+    this.store.dispatch(DashboardActions.addCard({ tabId, card }));
+  }
+
+  updateCard(tabId: string, card: Card) {
+    this.store.dispatch(DashboardActions.updateCard({ tabId, card }));
+  }
+
+  deleteCard(tabId: string, cardId: string) {
+    this.store.dispatch(DashboardActions.deleteCard({ tabId, cardId }));
+  }
 }

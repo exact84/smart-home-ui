@@ -1,5 +1,10 @@
 :host {
   display: flex;
+  flex-direction: column;
+}
+
+.cards {
+  display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   box-sizing: border-box;
@@ -7,5 +12,25 @@
 
 .active-border {
   border: solid 1px #42a5f5;
+  transition: border-color 0.3s ease;
+}
+
+.mat-button {
+  display: flex;
+  cursor: pointer;
+  border: 2px solid gray;
+  border-radius: 8px;
+  background-color: transparent;
+  margin: 6px;
+  padding: 4px 10px;
+  width: fit-content;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.mat-button:hover {
+  border-color: #42a5f5;
+  color: #42a5f5;
   transition: border-color 0.3s ease;
 }

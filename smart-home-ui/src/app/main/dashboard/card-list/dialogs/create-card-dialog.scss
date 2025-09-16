@@ -1,0 +1,31 @@
+.layout-options {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.layout-btn {
+  width: 300px;
+  border: 2px solid transparent;
+  background-color: black;
+  cursor: pointer;
+  display: flex;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
+  padding: 0;
+}
+
+.layout-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  display: block;
+}
+
+.layout-btn:hover {
+  border-color: #3f51b5;
+  background-color: #f0f0ff;
+}

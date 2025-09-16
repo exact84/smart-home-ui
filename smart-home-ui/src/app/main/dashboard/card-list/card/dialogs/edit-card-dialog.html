@@ -1,0 +1,42 @@
+<h2 mat-dialog-title>Entities card configuration</h2>
+
+<mat-dialog-content>
+  <mat-label>Card Title:</mat-label>
+
+  <div class="entity-item">
+    <mat-form-field appearance="fill" class="card-title">
+      <input matInput [(ngModel)]="title" placeholder="Card Title" />
+    </mat-form-field>
+  </div>
+
+  <label>Entities:</label>
+
+  <div class="entity-list">
+    @for (item of items; track $index) {
+      <div class="entity-item">
+        <mat-label>Entity #{{ $index + 1 }}:</mat-label>
+        <mat-form-field appearance="fill">
+          <mat-icon matPrefix>{{ item.icon }}</mat-icon>
+          <input matInput [(ngModel)]="item.label" placeholder="Name" />
+        </mat-form-field>
+        <button mat-icon-button color="warn" (click)="removeItem($index)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    }
+
+    <div class="item-row">
+      <mat-form-field appearance="fill" class="item-input">
+        <input matInput [(ngModel)]="newItemLabel" placeholder="New Item" />
+      </mat-form-field>
+      <button mat-icon-button color="primary" (click)="addItem()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="save()">Save</button>
+</mat-dialog-actions>

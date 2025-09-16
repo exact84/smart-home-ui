@@ -1,6 +1,16 @@
-@for (item of cards; track item.title) {
-  <app-card
-    [appHighlightActive]="hasActiveDevice(item)"
-    [card]="item"
-  ></app-card>
+<div class="cards">
+  @for (item of cards; track item.title) {
+    <app-card
+      [appHighlightActive]="hasActiveDevice(item)"
+      [card]="item"
+      [tabId]="tabId"
+    ></app-card>
+  }
+</div>
+@if (facade.editMode()) {
+  <mat-divider></mat-divider>
+
+  <button class="mat-button" (click)="onAddCardClick()">
+    <mat-icon>add</mat-icon> Add Card
+  </button>
 }

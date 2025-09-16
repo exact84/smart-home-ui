@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { DashboardData } from '@models/dashboard.model';
+import { Card } from '@models/card.model';
 
 export const loadDashboard = createAction(
   '[Dashboard] Load Dashboard',
@@ -51,4 +52,39 @@ export const updateDashboardSuccess = createAction(
 export const updateDashboardFailure = createAction(
   '[Dashboard] Save Tabs Order Success',
   props<{ error: string }>(),
+);
+
+export const reorderCard = createAction(
+  '[Dashboard] Reorder Card',
+  props<{ tabId: string; cardId: string; direction: 'left' | 'right' }>(),
+);
+
+export const toggleDevice = createAction(
+  '[Dashboard] Toggle Device',
+  props<{ deviceId: string; status: boolean }>(),
+);
+
+export const toggleDeviceSuccess = createAction(
+  '[Dashboard] Toggle Device Success',
+  props<{ deviceId: string; status: boolean }>(),
+);
+
+export const toggleDeviceFailure = createAction(
+  '[Dashboard] Toggle Device Failure',
+  props<{ deviceId: string; error: string }>(),
+);
+
+export const addCard = createAction(
+  '[Dashboard] Add Card',
+  props<{ tabId: string; card: Card }>(),
+);
+
+export const updateCard = createAction(
+  '[Dashboard] Update Card',
+  props<{ tabId: string; card: Card }>(),
+);
+
+export const deleteCard = createAction(
+  '[Dashboard] Delete Card',
+  props<{ tabId: string; cardId: string }>(),
 );

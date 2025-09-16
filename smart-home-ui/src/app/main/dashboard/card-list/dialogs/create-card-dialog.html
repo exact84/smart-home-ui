@@ -1,0 +1,31 @@
+<h2 mat-dialog-title>Select card layout</h2>
+
+<div class="layout-options">
+  <button
+    type="button"
+    class="layout-btn"
+    (click)="selectLayout(CardLayout.Horizontal)"
+  >
+    <img src="img/horizontal.png" alt="Horizontal" />
+  </button>
+
+  <button
+    type="button"
+    class="layout-btn"
+    (click)="selectLayout(CardLayout.Vertical)"
+  >
+    <img src="img/vertical.png" alt="Vertical" />
+  </button>
+
+  <button
+    type="button"
+    class="layout-btn"
+    (click)="selectLayout(CardLayout.SingleDevice)"
+  >
+    <img src="img/single.png" alt="Single Device" />
+  </button>
+</div>
+
+<mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="cancel()">Cancel</button>
+</mat-dialog-actions>

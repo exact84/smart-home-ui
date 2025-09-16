@@ -95,4 +95,62 @@ export const dashboardReducer = createReducer(
     ...state,
     data,
   })),
+
+  on(DashboardActions.reorderCard, (state, { tabId, cardId, direction }) => {
+    if (!state.data) return state;
+
+    const tabs = state.data.tabs.map((tab) => {
+      if (tab.id !== tabId) return tab;
+
+      const cards = [...tab.cards];
+      const index = cards.findIndex((c) => c.id === cardId);
+      if (index === -1) return tab;
+
+      const newIndex = direction === 'left' ? index - 1 : index + 1;
+      if (newIndex < 0 || newIndex >= cards.length) return tab;
+
+      [cards[index], cards[newIndex]] = [cards[newIndex], cards[index]];
+
+      return { ...tab, cards };
+    });
+
+    return {
+      ...state,
+      data: { ...state.data, tabs },
+    };
+  }),
+
+  on(DashboardActions.addCard, (state, { tabId, card }) => {
+    const tabs = state.data!.tabs.map((tab) =>
+      tab.id === tabId ? { ...tab, cards: [...tab.cards, card] } : tab,
+    );
+    return {
+      ...state,
+      data: { ...state.data!, tabs },
+    };
+  }),
+
+  on(DashboardActions.updateCard, (state, { tabId, card }) => {
+    const tabs = state.data!.tabs.map((tab) =>
+      tab.id === tabId
+        ? { ...tab, cards: tab.cards.map((c) => (c.id === card.id ? card : c)) }
+        : tab,
+    );
+    return {
+      ...state,
+      data: { ...state.data!, tabs },
+    };
+  }),
+
+  on(DashboardActions.deleteCard, (state, { tabId, cardId }) => {
+    const tabs = state.data!.tabs.map((tab) =>
+      tab.id === tabId
+        ? { ...tab, cards: tab.cards.filter((c) => c.id !== cardId) }
+        : tab,
+    );
+    return {
+      ...state,
+      data: { ...state.data!, tabs },
+    };
+  }),
 );

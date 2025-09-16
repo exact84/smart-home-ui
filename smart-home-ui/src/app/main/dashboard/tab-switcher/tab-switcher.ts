@@ -116,7 +116,9 @@ export class TabSwitcher {
     this.facade.addTab('newTab');
   }
 
-  onTabTitleChange(tabId: string, newTitle: string) {
+  onTabTitleChange(tabId: string, event: Event) {
+    const newTitle = (event.target as HTMLInputElement).value;
+    console.log('onTabTitleChange', tabId, newTitle);
     this.tabTitles.set(tabId, newTitle);
   }
 

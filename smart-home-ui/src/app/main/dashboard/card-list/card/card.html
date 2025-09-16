@@ -1,23 +1,43 @@
-<div class="row">
-  <h3 class="label">{{ card.title }}</h3>
-  @if (hasAnyState()) {
-    <mat-slide-toggle
-      class="compact-toggle"
-      [checked]="areAllDevicesOn"
-      (change)="toggleAllDevices($event.checked)"
-    >
-    </mat-slide-toggle>
+<div>
+  <div class="row">
+    <h3 class="label">{{ card.title }}</h3>
+    @if (hasAnyState()) {
+      <mat-slide-toggle
+        class="compact-toggle"
+        [checked]="areAllDevicesOn"
+        (change)="toggleAllDevices($event.checked)"
+      >
+      </mat-slide-toggle>
+    }
+  </div>
+
+  @switch (card.layout) {
+    @case (layoutEnum.Horizontal) {
+      <app-card-horizontal [card]="card" />
+    }
+    @case (layoutEnum.Vertical) {
+      <app-card-vertical [card]="card" />
+    }
+    @case (layoutEnum.SingleDevice) {
+      <app-card-device [card]="card" />
+    }
   }
 </div>
 
-@switch (card.layout) {
-  @case (layoutEnum.Horizontal) {
-    <app-card-horizontal [card]="card" />
-  }
-  @case (layoutEnum.Vertical) {
-    <app-card-vertical [card]="card" />
-  }
-  @case (layoutEnum.SingleDevice) {
-    <app-card-device [card]="card" />
-  }
+@if (facade.editMode()) {
+  <div>
+    <mat-divider></mat-divider>
+    <div class="controls">
+      <button mat-icon-button (click)="onMoveCardClick(card.id, 'left')">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <button mat-button (click)="onEditCardClick()">Edit Card</button>
+      <button mat-icon-button (click)="onDeleteCardClick(card.id)">
+        <mat-icon>delete</mat-icon>
+      </button>
+      <button mat-icon-button (click)="onMoveCardClick(card.id, 'right')">
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
+  </div>
 }

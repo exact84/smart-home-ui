@@ -59,13 +59,10 @@
               <mat-icon>arrow_back</mat-icon>
             </button>
             <div class="tab active">
-              <!-- <mat-form-field appearance="fill"> -->
-              <!-- <input matInput [(ngModel)]="item.title" /> -->
-              <!-- </mat-form-field> -->
               <input
                 matInput
                 [value]="item.title"
-                (input)="onTabTitleChange(item.id, $event.target.value)"
+                (input)="onTabTitleChange(item.id, $event)"
               />
             </div>
             <button class="mat-button" (click)="onRemoveTabClick(item.id)">
@@ -100,6 +97,6 @@
 @if (activeTab$ | async) {
   @let tab = activeTab$ | async;
   @if (tab) {
-    <app-card-list [cards]="tab.cards"></app-card-list>
+    <app-card-list [cards]="tab.cards" [tabId]="tab.id"></app-card-list>
   }
 }
