@@ -2,6 +2,7 @@ interface BaseItem {
   type: 'sensor' | 'device';
   icon: string;
   label: string;
+  id: string;
 }
 
 export interface SensorItem extends BaseItem {

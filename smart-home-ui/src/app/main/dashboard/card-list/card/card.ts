@@ -1,4 +1,11 @@
-import { Component, inject, Input } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  Input,
+  OnInit,
+  signal,
+} from '@angular/core';
 import {
   Card as CardType,
   CardLayout,
@@ -21,7 +28,7 @@ import { DashboardFacade } from '@store/dashboard/dashboard.facade';
 import { Overlay } from '@angular/cdk/overlay';
 import { EditCardDialog } from './dialogs/edit-card-dialog';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { ItemListFacade } from '@store/item-list/item-list.facade';
 
 @Component({
   selector: 'app-card',
@@ -35,21 +42,50 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatInputModule,
     FormsModule,
     MatDividerModule,
-    MatTooltipModule,
   ],
   templateUrl: './card.html',
   styleUrl: './card.scss',
+  standalone: true,
 })
-export class Card {
-  @Input() card!: CardType;
+export class Card implements OnInit {
   @Input() tabId!: string;
-  facade: DashboardFacade = inject(DashboardFacade);
+  dashboardFacade: DashboardFacade = inject(DashboardFacade);
+  itemListFacade: ItemListFacade = inject(ItemListFacade);
   @Input() items: (SensorItem | DeviceItem)[] = [];
-  private dialogRef!: MatDialogRef<unknown>;
+  private dialogRef!: MatDialogRef<EditCardDialog>;
   dialog: MatDialog = inject(MatDialog);
   overlay: Overlay = inject(Overlay);
   error: string = '';
-  title: string = '';
+  readonly layoutEnum = CardLayout;
+  readonly itemList = this.itemListFacade.itemList;
+  readonly cardSignal = signal<CardType>({} as CardType);
+
+  @Input()
+  set card(value: CardType) {
+    this.cardSignal.set(value);
+  }
+  get card(): CardType {
+    return this.cardSignal();
+  }
+
+  readonly deviceItems = computed(() => {
+    const card = this.cardSignal();
+    const items = this.itemList();
+    if (!card || !card.items) return [];
+    return items.filter((i): i is DeviceItem =>
+      card.items?.some((c) => c.id === i.id && i.type === 'device'),
+    );
+  });
+
+  readonly hasMultipleDevices = computed(() => this.deviceItems().length >= 2);
+
+  readonly isMasterToggleOn = computed(() =>
+    this.deviceItems().some((d) => d.type === 'device' && d.state),
+  );
+
+  ngOnInit(): void {
+    this.itemListFacade.loadItemList();
+  }
 
   isSensor(item: SensorItem | DeviceItem): item is SensorItem {
     return item.type === 'sensor';
@@ -58,33 +94,9 @@ export class Card {
   isDevice(item: SensorItem | DeviceItem): item is DeviceItem {
     return item.type === 'device';
   }
-  readonly layoutEnum = CardLayout;
-
-  hasAnyState(): boolean {
-    return this.card.items.filter((item) => 'state' in item).length >= 2;
-  }
-
-  get areAllDevicesOn(): boolean {
-    const result = this.card.items
-      .filter((item) => 'state' in item)
-      .some((item) => item.state === true);
-    return result;
-  }
-
-  toggleAllDevices(state: boolean): void {
-    for (const item of this.card.items) {
-      if ('state' in item) {
-        item.state = state;
-      }
-    }
-  }
-
-  onToggleDeviceState(item: DeviceItem, newState: boolean): void {
-    item.state = newState;
-  }
 
   onMoveCardClick(cardId: string, direction: 'left' | 'right') {
-    this.facade.reorderCard(this.tabId, cardId, direction);
+    this.dashboardFacade.reorderCard(this.tabId, cardId, direction);
   }
 
   onEditCardClick() {
@@ -97,15 +109,27 @@ export class Card {
       data: { card: this.card },
     });
 
-    this.dialogRef.afterClosed().subscribe((updatedCard?: CardType) => {
-      if (updatedCard) {
-        this.card = updatedCard; // надо, нет?
-        // this.facade.updateCard(updatedCard);
-      }
-    });
+    this.dialogRef
+      .afterClosed()
+      .subscribe((updatedCard: CardType | undefined) => {
+        if (updatedCard) {
+          this.dashboardFacade.updateCard(this.tabId, updatedCard);
+          this.cardSignal.set(updatedCard);
+        }
+      });
   }
 
   onDeleteCardClick(cardId: string) {
-    this.facade.deleteCard(this.tabId, cardId);
+    this.dashboardFacade.deleteCard(this.tabId, cardId);
+  }
+
+  onDeviceToggle = (item: DeviceItem, newState: boolean): void => {
+    this.itemListFacade.toggleItemState(item.id, newState);
+  };
+
+  onMasterToggle(state: boolean): void {
+    for (const device of this.deviceItems()) {
+      this.itemListFacade.toggleItemState(device.id, state);
+    }
   }
 }

@@ -1,5 +1,5 @@
 <div class="sensor-group">
-  @for (item of card.items; track item.label) {
+  @for (item of card.items; track $index) {
     @if (isSensor(item)) {
       <app-sensor [item]="item" />
     }

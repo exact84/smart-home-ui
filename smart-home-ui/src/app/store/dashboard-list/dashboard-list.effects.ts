@@ -14,7 +14,6 @@ export class DashboardListEffects {
     this.actions$.pipe(
       ofType(dashboardListActions.createDashboard),
       mergeMap(({ dashboard }) => {
-        console.log('saving dashboard: ', dashboard);
         return this.dashboardService.createDashboard(dashboard).pipe(
           map((createdDashboard) => {
             this.dashboardService.getDashboardList().subscribe((list) => {

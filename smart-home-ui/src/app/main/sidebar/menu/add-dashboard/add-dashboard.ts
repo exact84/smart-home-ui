@@ -75,11 +75,10 @@ export class AddDashboard {
       !dashboard.icon ||
       !dashboard.title ||
       !dashboard.id ||
-      dashboard.icon.length > 20 ||
-      dashboard.title.length > 20 ||
-      dashboard.id.length > 20
+      dashboard.title.length > 50 ||
+      dashboard.id.length > 30
     ) {
-      this.error = 'Fill all fields. Max length: 20 symbols.';
+      this.error = 'Fill all fields. Max Title length: 20, max ID length: 30';
       return;
     }
 
@@ -92,7 +91,6 @@ export class AddDashboard {
           return;
         }
 
-        console.log('Новый:', dashboard);
         this.store.dispatch(
           createDashboard({
             dashboard,

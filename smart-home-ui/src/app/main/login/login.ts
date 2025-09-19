@@ -5,7 +5,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Auth } from 'app/services/auth/auth';
+import { Auth } from '@services/auth';
 
 type LoginFormData = {
   username: FormControl<string>;
@@ -20,7 +20,7 @@ type LoginFormData = {
 })
 export class Login {
   authService = inject(Auth);
-  loginError = undefined;
+  loginError: number | undefined = undefined;
 
   form = new FormGroup<LoginFormData>({
     username: new FormControl('', {

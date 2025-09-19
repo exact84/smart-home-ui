@@ -1,5 +1,5 @@
 <div class="cards">
-  @for (item of cards; track item.title) {
+  @for (item of cards; track item.id) {
     <app-card
       [appHighlightActive]="hasActiveDevice(item)"
       [card]="item"

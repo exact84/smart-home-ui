@@ -19,7 +19,6 @@ import {
 import { MatInputModule } from '@angular/material/input';
 import { DashboardList } from '@models/dashboard-list.model';
 import { Overlay } from '@angular/cdk/overlay';
-import { Store } from '@ngrx/store';
 import { DashboardService } from '@services/dashboard';
 import { CreateCardDialog } from './dialogs/create-card-dialog';
 import { MatDividerModule } from '@angular/material/divider';
@@ -42,21 +41,20 @@ export class CardList {
   @ViewChild('dialogTemplate') dialogTemplate!: TemplateRef<
     MatDialogRef<DashboardList>
   >;
-  private dialogRef!: MatDialogRef<unknown>;
+  private dialogRef!: MatDialogRef<CreateCardDialog>;
   facade: DashboardFacade = inject(DashboardFacade);
   @Input() cards: Card[] = [];
   @Input() tabId: string = '';
   dialog: MatDialog = inject(MatDialog);
   overlay: Overlay = inject(Overlay);
-  store = inject(Store);
   dashboard = inject(DashboardService);
 
   error = '';
-  layout: CardLayout | null = null;
+  layout: CardLayout | undefined = undefined;
   readonly CardLayout = CardLayout;
 
   closeDialog() {
-    this.layout = null;
+    this.layout = undefined;
     this.dialogRef.close();
   }
 
@@ -79,9 +77,10 @@ export class CardList {
 
     this.dialogRef.afterClosed().subscribe((layout?: CardLayout) => {
       if (layout) {
+        const title = 'New Card';
         const newCard: Card = {
-          id: '', //title.toLowerCase().replace(/\s+/g, '-'), //title перевести в kebap-case
-          title: '',
+          id: title.toLocaleLowerCase().replaceAll(/\s+/g, '-') + Math.random(),
+          title,
           items: [],
           layout,
         };

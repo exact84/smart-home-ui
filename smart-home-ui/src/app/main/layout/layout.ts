@@ -1,10 +1,9 @@
-import { Component, HostListener, inject } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Sidebar } from '../sidebar/sidebar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterOutlet } from '@angular/router';
-import { Auth } from '@services/auth/auth';
 import { SIDEBAR_DESKTOP_BREAKPOINT } from 'app/constants/screen-size';
 
 @Component({
@@ -21,7 +20,6 @@ import { SIDEBAR_DESKTOP_BREAKPOINT } from 'app/constants/screen-size';
   styleUrl: './layout.scss',
 })
 export class Layout {
-  authService = inject(Auth);
   isDesktop = window.innerWidth > SIDEBAR_DESKTOP_BREAKPOINT;
   isSidebarOpened = false;
 

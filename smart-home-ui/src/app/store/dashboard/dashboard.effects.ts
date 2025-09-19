@@ -19,11 +19,7 @@ import {
   withLatestFrom,
 } from 'rxjs';
 import { Store } from '@ngrx/store';
-import {
-  selectDashboardId,
-  selectTabId,
-  selectTabs,
-} from './dashboard.selectors';
+import { selectDashboardId, selectTabs } from './dashboard.selectors';
 import { DashboardFacade } from './dashboard.facade';
 
 @Injectable()
@@ -34,12 +30,13 @@ export class DashboardEffects {
   private store = inject(Store);
   facade: DashboardFacade = inject(DashboardFacade);
 
-  // Навигация
+  // Navigation
   routeToDashboard$ = createEffect(() =>
     this.actions$.pipe(
       ofType(routerNavigatedAction),
       switchMap((action: RouterNavigatedAction) => {
-        console.log('routeToDashboard$');
+        const url = action.payload.routerState.url;
+        if (!url.startsWith('/dashboard')) return of(DashboardActions.noop());
         const root = action.payload.routerState.root;
         const dashboardId = root.firstChild?.firstChild?.params['dashboardId'];
         const tabId = root.firstChild?.firstChild?.params['tabId'];
@@ -72,16 +69,15 @@ export class DashboardEffects {
     ),
   );
 
-  // Загрузка данных
+  // Loading data
   loadDashboard$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DashboardActions.loadDashboard),
       switchMap(({ dashboardId, tabId }) =>
         this.dashboardService.getDashboardData(dashboardId).pipe(
           map((data) => {
-            console.log('loadDashboard$: ', dashboardId, tabId, data.tabs);
             const tabs = data.tabs ?? [];
-            if (!tabs.length) {
+            if (tabs.length === 0) {
               this.router.navigate(['/dashboard', dashboardId]);
               return DashboardActions.loadDashboardSuccess({
                 data,
@@ -90,12 +86,8 @@ export class DashboardEffects {
               });
             }
             const valid = tabs.some((t) => t.id === tabId);
-            if (valid) console.log('tabId is valid');
             const finalTabId = valid ? tabId : (tabs[0]?.id ?? '');
-            // if (tabId !== finalTabId) {
-            console.log('tabId: ', tabId, 'finalTabId: ', finalTabId);
             this.router.navigate(['/dashboard', dashboardId, finalTabId]);
-            // }
 
             return DashboardActions.loadDashboardSuccess({
               data,
@@ -111,7 +103,7 @@ export class DashboardEffects {
     ),
   );
 
-  // Выбор таба
+  // Select tab
   selectTab$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -121,7 +113,6 @@ export class DashboardEffects {
             filter((dashboardId): dashboardId is string => !!dashboardId),
             take(1),
             tap((dashboardId) => {
-              console.log('selectTab$: ', dashboardId, tabId);
               this.router.navigate(['/dashboard', dashboardId, tabId]);
             }),
           ),
@@ -130,7 +121,7 @@ export class DashboardEffects {
     { dispatch: false },
   );
 
-  // Сохранение изменений
+  // Save tabs change
   saveTabsOrder$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DashboardActions.updateDashboard),
@@ -149,7 +140,6 @@ export class DashboardEffects {
     this.actions$.pipe(
       ofType(DashboardActions.addTab),
       map(({ tabId: id }) => {
-        console.log('addTab$: ', id);
         return DashboardActions.selectTab({ tabId: id });
       }),
     ),

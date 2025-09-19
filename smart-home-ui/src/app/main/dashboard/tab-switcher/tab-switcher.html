@@ -63,6 +63,7 @@
                 matInput
                 [value]="item.title"
                 (input)="onTabTitleChange(item.id, $event)"
+                maxlength="20"
               />
             </div>
             <button class="mat-button" (click)="onRemoveTabClick(item.id)">
@@ -97,6 +98,9 @@
 @if (activeTab$ | async) {
   @let tab = activeTab$ | async;
   @if (tab) {
-    <app-card-list [cards]="tab.cards" [tabId]="tab.id"></app-card-list>
+    @let cards = cards$ | async;
+    @if (cards !== null) {
+      <app-card-list [cards]="cards" [tabId]="tab.id"></app-card-list>
+    }
   }
 }

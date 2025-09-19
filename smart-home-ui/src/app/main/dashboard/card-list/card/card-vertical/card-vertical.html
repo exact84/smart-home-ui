@@ -1,8 +1,8 @@
-@for (item of card.items; track item.label) {
+@for (item of deviceItems(); track $index) {
   @if (isSensor(item)) {
     <app-sensor [item]="item" />
   }
   @if (isDevice(item)) {
-    <app-device [item]="item" />
+    <app-device [item]="item" [onToggle]="onToggle" />
   }
 }

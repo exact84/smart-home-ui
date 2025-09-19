@@ -1,11 +1,11 @@
 <div>
   <div class="row">
     <h3 class="label">{{ card.title }}</h3>
-    @if (hasAnyState()) {
+    @if (hasMultipleDevices()) {
       <mat-slide-toggle
         class="compact-toggle"
-        [checked]="areAllDevicesOn"
-        (change)="toggleAllDevices($event.checked)"
+        [checked]="isMasterToggleOn()"
+        (change)="onMasterToggle($event.checked)"
       >
       </mat-slide-toggle>
     }
@@ -16,15 +16,15 @@
       <app-card-horizontal [card]="card" />
     }
     @case (layoutEnum.Vertical) {
-      <app-card-vertical [card]="card" />
+      <app-card-vertical [card]="card" [onToggle]="onDeviceToggle" />
     }
     @case (layoutEnum.SingleDevice) {
-      <app-card-device [card]="card" />
+      <app-card-device [card]="card" [onToggle]="onDeviceToggle" />
     }
   }
 </div>
 
-@if (facade.editMode()) {
+@if (dashboardFacade.editMode()) {
   <div>
     <mat-divider></mat-divider>
     <div class="controls">

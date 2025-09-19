@@ -7,13 +7,13 @@ import {
   selectDashboardError,
   selectDashboardLoading,
   selectTabId,
-  selectTabs,
 } from './dashboard.selectors';
 import { Router } from '@angular/router';
 import { DashboardData } from '@models/dashboard.model';
-import { firstValueFrom } from 'rxjs';
 import { Tab } from '@models/tab.model';
 import { Card } from '@models/card.model';
+import { map } from 'rxjs';
+import { deleteDashboard } from '@store/dashboard-list/dashboard-list.actions';
 
 @Injectable({ providedIn: 'root' })
 export class DashboardFacade {
@@ -37,13 +37,12 @@ export class DashboardFacade {
   }
 
   selectTab(tabId: string) {
-    console.log('From Facade selectTab, tabId: ', tabId);
     this.store.dispatch(DashboardActions.selectTab({ tabId }));
   }
 
   private generateTabId(title: string): string {
-    const normalized = title.toLowerCase().replace(/\s+/g, '-');
-    const random = Math.random().toString(36).substring(2, 6);
+    const normalized = title.toLowerCase().replaceAll(/\s+/g, '-');
+    const random = Math.random().toString(36).slice(2, 6);
     return `${normalized}-${random}`;
   }
 
@@ -54,7 +53,6 @@ export class DashboardFacade {
   }
 
   removeTab(tabId: string) {
-    console.log('From Facade removeTab, tabId: ', tabId);
     this.store.dispatch(DashboardActions.deleteTab({ tabId }));
   }
 
@@ -67,6 +65,22 @@ export class DashboardFacade {
     this.store.dispatch(
       DashboardActions.updateDashboard({ dashboardId, data }),
     );
+  }
+
+  deleteDashboard(dashboardId: string) {
+    this.store.dispatch(deleteDashboard({ dashboardId }));
+  }
+
+  getCard(tabId: string, cardId: string) {
+    return this.store
+      .select(selectDashboardData)
+      .pipe(
+        map((data) =>
+          data?.tabs
+            .find((t) => t.id === tabId)
+            ?.cards.find((c) => c.id === cardId),
+        ),
+      );
   }
 
   reorderCard(tabId: string, cardId: string, direction: 'left' | 'right') {

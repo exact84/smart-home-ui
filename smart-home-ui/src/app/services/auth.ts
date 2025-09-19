@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { AuthResponse } from '@models/auth.model';
 import { TokenStorage } from '@services/token-storage';
 import { BASE_API_URL } from 'app/constants/base-url';
-import { switchMap, tap } from 'rxjs';
+import { catchError, of, switchMap, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +14,11 @@ export class Auth {
   http: HttpClient = inject(HttpClient);
   router = inject(Router);
   userSubject = signal<AuthResponse | undefined>(undefined);
-  isAuthenticated = computed(() => this.userSubject() !== undefined);
+  readonly isAuthenticated = computed(
+    () => !!this.tokenStorage.getToken() && !!this.userSubject(),
+  );
+
+  private loading = false;
 
   login(payload: { username: string; password: string }) {
     const body = new HttpParams()
@@ -35,9 +39,21 @@ export class Auth {
   }
 
   loadUserData(token: string) {
+    if (this.userSubject() || this.loading) {
+      return of(this.userSubject());
+    }
+
+    this.loading = true;
     const headers = { Authorization: `Bearer ${token}` };
+
     return this.http
       .get<AuthResponse>(`${BASE_API_URL}user/profile`, { headers })
-      .pipe(tap((response) => this.userSubject.set(response)));
+      .pipe(
+        tap((res) => this.userSubject.set(res)),
+        catchError(() => {
+          return of(undefined);
+        }),
+        tap(() => (this.loading = false)),
+      );
   }
 }

@@ -1,6 +1,6 @@
 @let error = error$ | async;
 @let loading = loading$ | async;
-@if (error) {
+@if (error && typeof error === "string") {
   <div class="error">
     <span>{{ error }}</span>
   </div>

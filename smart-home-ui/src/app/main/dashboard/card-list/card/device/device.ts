@@ -12,8 +12,12 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 })
 export class Device {
   @Input({ required: true }) item!: DeviceItem;
+  @Input({ required: true }) onToggle!: (
+    item: DeviceItem,
+    newState: boolean,
+  ) => void;
 
   toggleState(newState: boolean): void {
-    this.item.state = newState;
+    this.onToggle(this.item, newState);
   }
 }

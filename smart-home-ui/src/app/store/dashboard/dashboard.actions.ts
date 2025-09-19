@@ -50,7 +50,7 @@ export const updateDashboardSuccess = createAction(
 );
 
 export const updateDashboardFailure = createAction(
-  '[Dashboard] Save Tabs Order Success',
+  '[Dashboard] Save Tabs Order Failure',
   props<{ error: string }>(),
 );
 

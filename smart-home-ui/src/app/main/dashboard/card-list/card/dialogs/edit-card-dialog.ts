@@ -1,7 +1,7 @@
-import { Component, Inject, inject, Input } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import {
-  Card as CardType,
   CardLayout,
+  Card as CardType,
   DeviceItem,
   SensorItem,
 } from '@models/index';
@@ -16,6 +16,8 @@ import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
+import { ItemListFacade } from '@store/item-list/item-list.facade';
 
 @Component({
   selector: 'app-edit-card-dialog',
@@ -28,48 +30,58 @@ import { MatIconModule } from '@angular/material/icon';
     MatButtonModule,
     MatDialogModule,
     MatIconModule,
+    MatSelectModule,
   ],
   templateUrl: './edit-card-dialog.html',
   styleUrl: './edit-card-dialog.scss',
 })
-export class EditCardDialog {
-  title: string = '';
-  items: (SensorItem | DeviceItem)[] = [];
+export class EditCardDialog implements OnInit {
+  cardCopy: CardType;
   @Input() card!: CardType;
-  newItemLabel: string = '';
+  newItemId: string | undefined = undefined;
+  itemListFacade = inject(ItemListFacade);
+  data = inject<{ card: CardType }>(MAT_DIALOG_DATA);
+  dialogRef = inject(MatDialogRef<EditCardDialog>);
+  items: (SensorItem | DeviceItem)[] = [];
+  readonly CardLayout = CardLayout;
 
-  constructor(
-    private dialogRef: MatDialogRef<EditCardDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: { card: CardType },
-  ) {
-    this.card = data.card;
-    this.title = data.card.title;
-    this.items = [...data.card.items];
+  constructor() {
+    this.cardCopy = {
+      ...this.data.card,
+      items: this.data.card.items.map((i) => ({ ...i })),
+    };
   }
 
   ngOnInit() {
-    this.title = this.card.title;
-    this.items = [...this.card.items];
+    // Exclude device items from horizontal cards
+    const allItems = this.itemListFacade.itemList();
+    this.items =
+      this.data.card.layout === CardLayout.Horizontal
+        ? allItems.filter((i) => i.type !== 'device')
+        : allItems;
   }
 
   addItem() {
-    // Добавить новый итем
+    if (!this.newItemId) return;
+    const entity = this.itemListFacade
+      .itemList()
+      .find((e) => e.id === this.newItemId);
+    if (entity) {
+      this.cardCopy.items.push({ ...entity });
+      this.newItemId = undefined;
+    }
   }
 
   removeItem(index: number) {
-    throw new Error('Method not implemented.');
+    this.cardCopy.items.splice(index, 1);
   }
 
   save() {
-    const updatedCard: CardType = {
-      ...this.card,
-      title: this.title,
-      items: this.items,
-    };
-    this.dialogRef.close(updatedCard);
+    this.cardCopy.title = this.cardCopy.title.slice(0, 50);
+    this.dialogRef.close(this.cardCopy);
   }
 
   cancel() {
-    this.dialogRef.close(); // отмена
+    this.dialogRef.close();
   }
 }

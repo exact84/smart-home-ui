@@ -10,8 +10,8 @@ export class TokenStorage {
     console.log('Token received:', token);
   }
 
-  getToken(): string | null {
-    return localStorage.getItem(TOKEN_NAME);
+  getToken(): string | undefined {
+    return localStorage.getItem(TOKEN_NAME) || undefined;
   }
 
   removeToken(): void {

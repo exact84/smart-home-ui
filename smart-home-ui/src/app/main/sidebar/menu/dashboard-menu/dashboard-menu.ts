@@ -7,6 +7,7 @@ import { loadDashboard } from 'app/store/dashboard/dashboard.actions';
 import { AddDashboard } from '../add-dashboard/add-dashboard';
 import { MatIconModule } from '@angular/material/icon';
 import { DashboardFacade } from '@store/dashboard/dashboard.facade';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-dashboard-menu',
@@ -23,14 +24,16 @@ export class DashboardMenu {
   editMode = this.facade.editMode;
 
   constructor() {
-    this.dashboard.getDashboardList().subscribe((dashboardList) => {
-      this.dashboardList.set(dashboardList);
-    });
+    this.dashboard
+      .getDashboardList()
+      .pipe(takeUntilDestroyed())
+      .subscribe((dashboardList) => {
+        this.dashboardList.set(dashboardList);
+      });
   }
 
   onDashboardClick(selectedDashboard: DashboardList) {
     if (this.editMode()) {
-      // не переходить если в режиме редактирования
       return;
     }
     this.store.dispatch(

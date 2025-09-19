@@ -5,13 +5,13 @@ import { DashboardList } from '@models/dashboard-list.model';
 export interface DashboardListState {
   dashboards: DashboardList[];
   loading: boolean;
-  error: string | null;
+  error: string | undefined;
 }
 
 export const initialDashboardListState: DashboardListState = {
   dashboards: [],
   loading: false,
-  error: null,
+  error: undefined,
 };
 export const dashboardListReducer = createReducer(
   initialDashboardListState,
@@ -19,7 +19,7 @@ export const dashboardListReducer = createReducer(
   on(dashboardListActions.createDashboard, (state) => ({
     ...state,
     loading: true,
-    error: null,
+    error: undefined,
   })),
 
   on(dashboardListActions.createDashboardSuccess, (state, { dashboard }) => ({
@@ -37,7 +37,7 @@ export const dashboardListReducer = createReducer(
   on(dashboardListActions.deleteDashboard, (state) => ({
     ...state,
     loading: true,
-    error: null,
+    error: undefined,
   })),
 
   on(dashboardListActions.deleteDashboardSuccess, (state, { dashboardId }) => ({

@@ -1,7 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthResponse } from '@models/auth.model';
-import { Auth } from '@services/auth/auth';
+import { Auth } from '@services/auth';
 
 @Component({
   selector: 'app-footer',

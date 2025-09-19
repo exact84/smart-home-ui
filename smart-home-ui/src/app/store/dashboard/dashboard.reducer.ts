@@ -4,21 +4,21 @@ import { DashboardData } from '@models/dashboard.model';
 import { DashboardList } from '@models/dashboard-list.model';
 
 export interface DashboardState {
-  dashboardList: DashboardList | null;
-  data: DashboardData | null;
-  dashboardId: string | null;
-  tabId: string | null;
+  dashboardList: DashboardList | undefined;
+  data: DashboardData | undefined;
+  dashboardId: string | undefined;
+  tabId: string | undefined;
   loading: boolean;
-  error: string | null;
+  error: string | undefined;
 }
 
 export const initialState: DashboardState = {
-  dashboardList: null,
-  data: null,
-  dashboardId: null,
-  tabId: null,
+  dashboardList: undefined,
+  data: undefined,
+  dashboardId: undefined,
+  tabId: undefined,
   loading: false,
-  error: null,
+  error: undefined,
 };
 
 export const dashboardReducer = createReducer(
@@ -26,10 +26,10 @@ export const dashboardReducer = createReducer(
 
   on(DashboardActions.loadDashboard, (state, { dashboardId, tabId }) => ({
     ...state,
-    selectedDashboardId: dashboardId,
+    dashboardId,
     tabId,
     loading: true,
-    error: null,
+    error: undefined,
   })),
 
   on(
@@ -70,7 +70,7 @@ export const dashboardReducer = createReducer(
       ...state.data,
       tabs: state.data!.tabs.filter((tab) => tab.id !== tabId),
     },
-    tabId: state.tabId === tabId ? null : state.tabId, // если удаляем активный таб, то переключаемся на первый
+    tabId: state.tabId === tabId ? undefined : state.tabId, // if tab is deleted, then switch to first tab
   })),
 
   on(DashboardActions.reorderTab, (state, { tabId, direction }) => {
@@ -133,7 +133,12 @@ export const dashboardReducer = createReducer(
   on(DashboardActions.updateCard, (state, { tabId, card }) => {
     const tabs = state.data!.tabs.map((tab) =>
       tab.id === tabId
-        ? { ...tab, cards: tab.cards.map((c) => (c.id === card.id ? card : c)) }
+        ? {
+            ...tab,
+            cards: tab.cards.map((c) =>
+              c.id === card.id ? { ...c, ...card } : c,
+            ),
+          }
         : tab,
     );
     return {

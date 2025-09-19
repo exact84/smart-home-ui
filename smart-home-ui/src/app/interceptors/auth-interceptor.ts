@@ -1,6 +1,6 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { catchError, throwError } from 'rxjs';
+import { catchError, EMPTY, throwError } from 'rxjs';
 
 import { Router } from '@angular/router';
 import { TokenStorage } from '@services/token-storage';
@@ -27,6 +27,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       if (error.status === 401) {
         tokenStorage.removeToken();
         router.navigate(['/login']);
+        return EMPTY;
       }
       return throwError(() => error);
     }),

@@ -14,11 +14,11 @@ import { CardLayout } from '@models/card.model';
 export class CreateCardDialog {
   dialogRef = inject(MatDialogRef<CreateCardDialog>);
   readonly CardLayout = CardLayout;
-  selectedLayout: CardLayout | null = null;
+  selectedLayout: CardLayout | undefined = undefined;
 
   selectLayout(layout: CardLayout) {
     this.selectedLayout = layout;
-    this.dialogRef.close(layout); // закрываем диалог с выбранным layout
+    this.dialogRef.close(layout);
   }
 
   cancel() {

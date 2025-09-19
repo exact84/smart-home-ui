@@ -50,3 +50,12 @@ export const selectRouteParams = createSelector(selectRouterState, (router) => {
     tabId: route?.params['tabId'],
   };
 });
+
+// For update card when editing
+export const selectCards = (tabId: string) =>
+  createSelector(
+    selectDashboardState,
+    (state) =>
+      [...(state.data?.tabs ?? [])].find((tab) => tab.id === tabId)?.cards ??
+      [],
+  );

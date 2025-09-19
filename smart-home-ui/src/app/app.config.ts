@@ -18,6 +18,8 @@ import { DashboardListEffects } from './store/dashboard-list/dashboard-list.effe
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { isDevMode } from '@angular/core';
+import { itemListReducer } from '@store/item-list/item-list.reducer';
+import { ItemListEffects } from '@store/item-list/ItemList.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -29,8 +31,9 @@ export const appConfig: ApplicationConfig = {
     provideStore({
       dashboard: dashboardReducer,
       dashboardList: dashboardListReducer,
+      itemList: itemListReducer,
     }),
-    provideEffects([DashboardEffects, DashboardListEffects]),
+    provideEffects([DashboardEffects, DashboardListEffects, ItemListEffects]),
     provideStoreDevtools({
       maxAge: 25,
       logOnly: !isDevMode(),
